@@ -1,0 +1,33 @@
+# ==============================================================
+# = Config Server Base
+# ==============================================================
+
+server:
+  port: 8888
+
+spring:
+  config:
+    use-legacy-processing: false
+  # ==============================================================
+  # = Profilo Attivo
+  # ==============================================================
+  profiles:
+    active: github
+
+# end point: http://localhost:8888/{application-name}/{profile}[/{label}]
+
+# ==============================================================
+# = Logs Parameters
+# ==============================================================
+logging:
+  level:
+    org.springframework.cloud: DEBUG
+    org.springframework.security: DEBUG
+
+sicurezza:
+  userpwd: BimBumBam_2018
+  adminpwd: MagicaBula_2018
+
+jasypt:
+  encryptor:
+    password: 123_Stella
