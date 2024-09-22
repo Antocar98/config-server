@@ -6,6 +6,8 @@ server:
   port: 8888
 
 spring:
+  application:
+    name: config-server
   config:
     use-legacy-processing: false
   # ==============================================================
@@ -13,8 +15,18 @@ spring:
   # ==============================================================
   profiles:
     active: github
-
 # end point: http://localhost:8888/{application-name}/{profile}[/{label}]
+
+  # ==============================================================
+  # = Bus Parameters
+  # ==============================================================
+  cloud:
+    bus:
+      #id: ${spring.application.name}:${spring.profiles.active}:${random.uuid}
+      enabled: true
+  kafka:
+    bootstrap-servers: localhost:29092
+    client-id: ${spring.application.name}:${spring.profiles.active}:${random.uuid}
 
 # ==============================================================
 # = Logs Parameters
@@ -31,3 +43,19 @@ sicurezza:
 jasypt:
   encryptor:
     password: 123_Stella
+
+
+# ==============================================================
+# = Actuator Parameters
+# ==============================================================
+management:
+  info:
+    env:
+      enabled: true
+  endpoint:
+    health:
+      show-details: WHEN_AUTHORIZED
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,refresh,bus-refresh,bus-env
