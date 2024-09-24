@@ -1,49 +1,72 @@
 # ==============================================================
-# = Config Server Base
+# = Config Server multi profilo con autenticazione
+# = end point: http://localhost:8888/{application-name}/{profile}[/{label}]
+# = avvio: java -jar '-Dspring.profiles.active=peer1' -XX:MaxRAM=72m -XX:+UseSerialGC -Xss512k configserver-0.0.1-SNAPSHOT.jar --enpwd=123_Stella --uspwd=BimBumBam_2018 --adpwd=MagicaBula_2018
 # ==============================================================
 
 server:
   port: 8888
 
+# ==============================================================
+# = Profilo Attivo PEER 1
+# ==============================================================
 spring:
-  application:
-    name: config-server
   config:
-    use-legacy-processing: false
+    activate:
+      on-profile: peer1
+  application:
+    name: ConfigServer
   # ==============================================================
-  # = Profilo Attivo
-  # ==============================================================
-  profiles:
-    active: github
-# end point: http://localhost:8888/{application-name}/{profile}[/{label}]
-
-  # ==============================================================
-  # = Bus Parameters
+  # = Cloud Parameters
   # ==============================================================
   cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/Antocar98/alphashop-config.git
+          username: Antocar98
+          password: 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
+          timeout: 5 #in secondi
+          cloneOnStart: true
+          default-label: main
+    # ==============================================================
+    # = Bus Parameters
+    # ==============================================================
     bus:
       #id: ${spring.application.name}:${spring.profiles.active}:${random.uuid}
       enabled: true
   kafka:
-    bootstrap-servers: localhost:29092
+    bootstrap-servers:
+      - ${KAFKA_ADDR:http://localhost:29092}
     client-id: ${spring.application.name}:${spring.profiles.active}:${random.uuid}
 
 # ==============================================================
-# = Logs Parameters
+# = Eureka Properties
+# = Nota: prima di attivare il servizio servono tre heartbeat
 # ==============================================================
-logging:
-  level:
-    org.springframework.cloud: DEBUG
-    org.springframework.security: DEBUG
-
-sicurezza:
-  userpwd: BimBumBam_2018
-  adminpwd: MagicaBula_2018
-
-jasypt:
-  encryptor:
-    password: 123_Stella
-
+eureka:
+  # ==============================================================
+  # = Impostazioni Instance
+  # ==============================================================
+  instance:
+    #intervallo di attesa prima della rimozione del servizio (def 90 sec)
+    lease-expiration-duration-in-seconds: 60
+    #intervallo di invio dell'heartbeat (def 30 sec)
+    leaseRenewalIntervalInSeconds: 15
+    #id di identificazione dell'istanza
+    instanceId: ${server.port}-${spring.application.name}-1
+    #registrazione per indirizzo ip (defualt hostname)
+    preferIpAddress: true
+  # ==============================================================
+  # = Impostazioni Client
+  # ==============================================================
+  client:
+    registerWithEureka: true
+    fetchRegistry: true
+    serviceUrl:
+      defaultZone: http://user:BimBumBam_2018@localhost:8761/eureka/,http://user:BimBumBam_2018@localhost:8762/eureka/
+    #time out di connessione in secondi al server Eureka (def 5 sec)
+    eureka-server-connect-timeout-seconds: 8
 
 # ==============================================================
 # = Actuator Parameters
@@ -59,3 +82,122 @@ management:
     web:
       exposure:
         include: health,info,metrics,refresh,bus-refresh,bus-env
+
+
+# ==============================================================
+# = Logs Parameters
+# ==============================================================
+logging:
+  level:
+    org:
+      springframework:
+        cloud: DEBUG
+        security: DEBUG
+
+sicurezza:
+  userpwd: 'BimBumBam_2018'
+  adminpwd: 'MagicaBula_2018'
+
+jasypt:
+  encryptor:
+    password: '123_Stella'
+
+---
+
+server:
+  port: 8889
+
+# ==============================================================
+# = Profilo Attivo PEER 2
+# ==============================================================
+spring:
+  config:
+    activate:
+      on-profile: peer2
+  application:
+    name: ConfigServer
+  # ==============================================================
+  # = Cloud Parameters
+  # ==============================================================
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/Antocar98/alphashop-config.git
+          username: Antocar98
+          password: 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
+          timeout: 5 #in secondi
+          cloneOnStart: true
+          default-label: main
+    # ==============================================================
+    # = Bus Parameters
+    # ==============================================================
+    bus:
+      #id: ${spring.application.name}:${spring.profiles.active}:${random.uuid}
+      enabled: true
+  kafka:
+    bootstrap-servers:
+      - ${KAFKA_ADDR:http://localhost:29092}
+    client-id: ${spring.application.name}:${spring.profiles.active}:${random.uuid}
+
+# ==============================================================
+# = Eureka Properties
+# = Nota: prima di attivare il servizio servono tre heartbeat
+# ==============================================================
+eureka:
+  # ==============================================================
+  # = Impostazioni Instance
+  # ==============================================================
+  instance:
+    #intervallo di attesa prima della rimozione del servizio (def 90 sec)
+    lease-expiration-duration-in-seconds: 60
+    #intervallo di invio dell'heartbeat (def 30 sec)
+    leaseRenewalIntervalInSeconds: 15
+    #id di identificazione dell'istanza
+    instanceId: ${server.port}-${spring.application.name}-2
+    #registrazione per indirizzo ip (defualt hostname)
+    preferIpAddress: true
+  # ==============================================================
+  # = Impostazioni Client
+  # ==============================================================
+  client:
+    registerWithEureka: true
+    fetchRegistry: true
+    serviceUrl:
+      defaultZone: http://user:BimBumBam_2018@localhost:8761/eureka/,http://user:BimBumBam_2018@localhost:8762/eureka/
+    #time out di connessione in secondi al server Eureka (def 5 sec)
+    eureka-server-connect-timeout-seconds: 8
+
+# ==============================================================
+# = Actuator Parameters
+# ==============================================================
+management:
+  info:
+    env:
+      enabled: true
+  endpoint:
+    health:
+      show-details: WHEN_AUTHORIZED
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,refresh,bus-refresh,bus-env
+
+
+# ==============================================================
+# = Logs Parameters
+# ==============================================================
+logging:
+  level:
+    org:
+      springframework:
+        cloud: DEBUG
+        security: DEBUG
+
+sicurezza:
+  userpwd: 'BimBumBam_2018'
+  adminpwd: 'MagicaBula_2018'
+
+jasypt:
+  encryptor:
+    password: '123_Stella'
