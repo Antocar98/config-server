@@ -25,17 +25,21 @@ spring:
         git:
           uri: https://github.com/Antocar98/alphashop-config.git
           username: Antocar98
-          password: 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
+          password: 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
           timeout: 10 #in secondi
-          cloneOnStart: true
           default-label: main
           refresh-rate: 10
+          force-pull: true
     # ==============================================================
     # = Bus Parameters
     # ==============================================================
     bus:
       #id: ${spring.application.name}:${spring.profiles.active}:${random.uuid}
       enabled: true
+      refresh:
+        enabled: true
+      env:
+        enabled: true
   kafka:
     bootstrap-servers:
       - ${KAFKA_ADDR:http://localhost:29092}
@@ -126,9 +130,8 @@ spring:
         git:
           uri: https://github.com/Antocar98/alphashop-config.git
           username: Antocar98
-          password: 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
+          password: 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
           timeout: 10 #in secondi
-          cloneOnStart: true
           default-label: main
           refresh-rate: 10
     # ==============================================================
@@ -137,6 +140,10 @@ spring:
     bus:
       #id: ${spring.application.name}:${spring.profiles.active}:${random.uuid}
       enabled: true
+      refresh:
+        enabled: true
+      env:
+        enabled: true
   kafka:
     bootstrap-servers:
       - ${KAFKA_ADDR:http://localhost:29092}
