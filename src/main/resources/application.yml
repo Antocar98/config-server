@@ -25,10 +25,11 @@ spring:
         git:
           uri: https://github.com/Antocar98/alphashop-config.git
           username: Antocar98
-          password: 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
-          timeout: 5 #in secondi
+          password: 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
+          timeout: 10 #in secondi
           cloneOnStart: true
           default-label: main
+          refresh-rate: 10
     # ==============================================================
     # = Bus Parameters
     # ==============================================================
@@ -66,7 +67,7 @@ eureka:
     serviceUrl:
       defaultZone: http://user:BimBumBam_2018@localhost:8761/eureka/,http://user:BimBumBam_2018@localhost:8762/eureka/
     #time out di connessione in secondi al server Eureka (def 5 sec)
-    eureka-server-connect-timeout-seconds: 8
+    eureka-server-connect-timeout-seconds: 10
 
 # ==============================================================
 # = Actuator Parameters
@@ -125,10 +126,11 @@ spring:
         git:
           uri: https://github.com/Antocar98/alphashop-config.git
           username: Antocar98
-          password: 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
-          timeout: 5 #in secondi
+          password: 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
+          timeout: 10 #in secondi
           cloneOnStart: true
           default-label: main
+          refresh-rate: 10
     # ==============================================================
     # = Bus Parameters
     # ==============================================================
