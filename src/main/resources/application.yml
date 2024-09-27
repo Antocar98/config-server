@@ -199,7 +199,3 @@ logging:
 sicurezza:
   userpwd: 'BimBumBam_2018'
   adminpwd: 'MagicaBula_2018'
-
-jasypt:
-  encryptor:
-    password: '123_Stella'
