@@ -25,7 +25,7 @@ spring:
         git:
           uri: https://github.com/Antocar98/alphashop-config.git
           username: Antocar98
-          password: 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
+          password: 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
           timeout: 10 #in secondi
           default-label: main
           clone-on-start: true
@@ -126,7 +126,7 @@ spring:
         git:
           uri: https://github.com/Antocar98/alphashop-config.git
           username: Antocar98
-          password: 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
+          password: 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
           timeout: 10 #in secondi
           default-label: main
           clone-on-start: true
